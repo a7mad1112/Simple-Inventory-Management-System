@@ -6,5 +6,6 @@ namespace SIMS.Repositories
     {
         void Add(Product product);
         IEnumerable<Product> GetAll();
+        Product? GetByName(string name);
     }
 }

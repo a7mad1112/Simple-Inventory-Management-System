@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using SIMS.Models;
 
 namespace SIMS.Repositories
@@ -15,6 +16,12 @@ namespace SIMS.Repositories
         public IEnumerable<Product> GetAll()
         {
             return _products.AsReadOnly();
+        }
+
+        public Product? GetByName(string name)
+        {
+            string normalizedName = Product.NormalizeName(name);
+            return _products.FirstOrDefault(p => Product.NormalizeName(p.Name) == normalizedName);
         }
     }
 }
