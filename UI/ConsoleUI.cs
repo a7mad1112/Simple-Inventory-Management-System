@@ -15,9 +15,48 @@ namespace SIMS.UI
 
         public void Run()
         {
-            Console.WriteLine("Inventory Management System");
-            Console.WriteLine("Application started successfully.\n");
-            
+            bool exit = false;
+
+            while (!exit)
+            {
+                DisplayMenu();
+                string choice = Console.ReadLine() ?? string.Empty;
+
+                exit = HandleMenuSelection(choice);
+            }
+        }
+
+        private void DisplayMenu()
+        {
+            Console.WriteLine("\n=== Inventory Management System ===");
+            Console.WriteLine("1. Add Product");
+            Console.WriteLine("2. View Products");
+            Console.WriteLine("0. Exit");
+            Console.Write("Select an option: ");
+        }
+
+        private bool HandleMenuSelection(string choice)
+        {
+            switch (choice)
+            {
+                case "1":
+                    HandleAddProduct();
+                    return false;
+                case "2":
+                    HandleViewProducts();
+                    return false;
+                case "0":
+                    Console.WriteLine("\nGoodbye!");
+                    return true;
+                default:
+                    Console.WriteLine("\nError: Invalid option. Please select a valid option from the menu.");
+                    return false;
+            }
+        }
+
+        private void HandleAddProduct()
+        {
+            Console.WriteLine("\n--- Add Product ---");
             try
             {
                 Console.Write("Enter product name: ");
@@ -48,7 +87,10 @@ namespace SIMS.UI
             {
                 Console.WriteLine($"\nAn unexpected error occurred: {ex.Message}");
             }
+        }
 
+        private void HandleViewProducts()
+        {
             Console.WriteLine("\n--- Product List ---");
             var products = _inventoryService.GetAllProducts();
 
