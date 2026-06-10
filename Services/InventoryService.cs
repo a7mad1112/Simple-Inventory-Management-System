@@ -16,26 +16,13 @@ namespace SIMS.Services
 
         public void CreateProduct(string name, decimal price, int quantity)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("Product name cannot be empty.", nameof(name));
-            }
+            ValidateProductData(name, price, quantity);
 
             name = name.Trim();
 
             if (_productRepository.GetByName(name) != null)
             {
                 throw new ArgumentException("A product with this name already exists.", nameof(name));
-            }
-
-            if (price < 0)
-            {
-                throw new ArgumentException("Price must be greater than or equal to zero.", nameof(price));
-            }
-
-            if (quantity < 0)
-            {
-                throw new ArgumentException("Quantity must be greater than or equal to zero.", nameof(quantity));
             }
 
             var product = new Product
@@ -48,9 +35,59 @@ namespace SIMS.Services
             _productRepository.Add(product);
         }
 
+        public void EditProduct(string oldName, string newName, decimal newPrice, int newQuantity)
+        {
+            var product = _productRepository.GetByName(oldName);
+            if (product == null)
+            {
+                throw new ArgumentException("Product not found.", nameof(oldName));
+            }
+
+            ValidateProductData(newName, newPrice, newQuantity);
+
+            newName = newName.Trim();
+
+            if (Product.NormalizeName(product.Name) != Product.NormalizeName(newName))
+            {
+                if (_productRepository.GetByName(newName) != null)
+                {
+                    throw new ArgumentException("A product with this name already exists.", nameof(newName));
+                }
+            }
+
+            product.Name = newName;
+            product.Price = newPrice;
+            product.Quantity = newQuantity;
+
+            _productRepository.Update(product);
+        }
+
+        public Product? GetProductByName(string name)
+        {
+            return _productRepository.GetByName(name);
+        }
+
         public IEnumerable<Product> GetAllProducts()
         {
             return _productRepository.GetAll();
+        }
+
+        private void ValidateProductData(string name, decimal price, int quantity)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException("Product name cannot be empty.", nameof(name));
+            }
+
+            if (price < 0)
+            {
+                throw new ArgumentException("Price must be greater than or equal to zero.", nameof(price));
+            }
+
+            if (quantity < 0)
+            {
+                throw new ArgumentException("Quantity must be greater than or equal to zero.", nameof(quantity));
+            }
         }
     }
 }

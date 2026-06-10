@@ -31,6 +31,7 @@ namespace SIMS.UI
             Console.WriteLine("\n=== Inventory Management System ===");
             Console.WriteLine("1. Add Product");
             Console.WriteLine("2. View Products");
+            Console.WriteLine("3. Edit Product");
             Console.WriteLine("0. Exit");
             Console.Write("Select an option: ");
         }
@@ -44,6 +45,9 @@ namespace SIMS.UI
                     return false;
                 case "2":
                     HandleViewProducts();
+                    return false;
+                case "3":
+                    HandleEditProduct();
                     return false;
                 case "0":
                     Console.WriteLine("\nGoodbye!");
@@ -104,6 +108,53 @@ namespace SIMS.UI
                 {
                     Console.WriteLine($"Name: {product.Name}, Price: {product.Price:C}, Quantity: {product.Quantity}");
                 }
+            }
+        }
+
+        private void HandleEditProduct()
+        {
+            Console.WriteLine("\n--- Edit Product ---");
+            try
+            {
+                Console.Write("Enter the name of the product to edit: ");
+                string oldName = Console.ReadLine() ?? string.Empty;
+
+                var product = _inventoryService.GetProductByName(oldName);
+                if (product == null)
+                {
+                    Console.WriteLine("Error: Product not found.");
+                    return;
+                }
+
+                Console.WriteLine($"\nCurrent values - Name: {product.Name}, Price: {product.Price:C}, Quantity: {product.Quantity}\n");
+
+                Console.Write("Enter new product name: ");
+                string newName = Console.ReadLine() ?? string.Empty;
+
+                Console.Write("Enter new product price: ");
+                if (!decimal.TryParse(Console.ReadLine(), out decimal price))
+                {
+                    Console.WriteLine("Error: Invalid price format.");
+                    return;
+                }
+
+                Console.Write("Enter new product quantity: ");
+                if (!int.TryParse(Console.ReadLine(), out int quantity))
+                {
+                    Console.WriteLine("Error: Invalid quantity format.");
+                    return;
+                }
+
+                _inventoryService.EditProduct(oldName, newName, price, quantity);
+                Console.WriteLine("\nProduct updated successfully!");
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"\nValidation Error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\nAn unexpected error occurred: {ex.Message}");
             }
         }
     }
