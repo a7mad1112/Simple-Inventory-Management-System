@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using SIMS.Services;
 
 namespace SIMS.UI
@@ -46,6 +47,21 @@ namespace SIMS.UI
             catch (Exception ex)
             {
                 Console.WriteLine($"\nAn unexpected error occurred: {ex.Message}");
+            }
+
+            Console.WriteLine("\n--- Product List ---");
+            var products = _inventoryService.GetAllProducts();
+
+            if (!products.Any())
+            {
+                Console.WriteLine("No products found.");
+            }
+            else
+            {
+                foreach (var product in products)
+                {
+                    Console.WriteLine($"Name: {product.Name}, Price: {product.Price:C}, Quantity: {product.Quantity}");
+                }
             }
         }
     }
