@@ -28,5 +28,9 @@ namespace SIMS.Repositories
         {
             // In-memory objects are updated by reference. No additional action needed.
         }
+        public void Remove(Product product)
+        {
+            _products.Remove(product);
+        }
     }
 }

@@ -67,6 +67,17 @@ namespace SIMS.Services
             return _productRepository.GetByName(name);
         }
 
+        public void DeleteProduct(string name)
+        {
+            var product = _productRepository.GetByName(name);
+            if (product == null)
+            {
+                throw new ArgumentException("Product not found.", nameof(name));
+            }
+
+            _productRepository.Remove(product);
+        }
+
         public IEnumerable<Product> GetAllProducts()
         {
             return _productRepository.GetAll();
