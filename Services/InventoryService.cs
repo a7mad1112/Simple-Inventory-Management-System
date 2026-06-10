@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using SIMS.Models;
 using SIMS.Repositories;
 
@@ -38,6 +39,11 @@ namespace SIMS.Services
             };
 
             _productRepository.Add(product);
+        }
+
+        public IEnumerable<Product> GetAllProducts()
+        {
+            return _productRepository.GetAll();
         }
     }
 }

@@ -11,5 +11,10 @@ namespace SIMS.Repositories
         {
             _products.Add(product);
         }
+
+        public IEnumerable<Product> GetAll()
+        {
+            return _products.AsReadOnly();
+        }
     }
 }
