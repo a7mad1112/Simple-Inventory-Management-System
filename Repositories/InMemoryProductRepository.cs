@@ -23,5 +23,10 @@ namespace SIMS.Repositories
             string normalizedName = Product.NormalizeName(name);
             return _products.FirstOrDefault(p => Product.NormalizeName(p.Name) == normalizedName);
         }
+
+        public void Update(Product product)
+        {
+            // In-memory objects are updated by reference. No additional action needed.
+        }
     }
 }
