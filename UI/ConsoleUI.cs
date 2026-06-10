@@ -20,7 +20,7 @@ namespace SIMS.UI
             while (!exit)
             {
                 DisplayMenu();
-                string choice = Console.ReadLine() ?? string.Empty;
+                string choice = (Console.ReadLine() ?? string.Empty).Trim();
 
                 exit = HandleMenuSelection(choice);
             }
@@ -92,9 +92,9 @@ namespace SIMS.UI
         private void HandleViewProducts()
         {
             Console.WriteLine("\n--- Product List ---");
-            var products = _inventoryService.GetAllProducts();
+            var products = _inventoryService.GetAllProducts().ToList();
 
-            if (!products.Any())
+            if (products.Count == 0)
             {
                 Console.WriteLine("No products found.");
             }
