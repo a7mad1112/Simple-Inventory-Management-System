@@ -8,5 +8,6 @@ namespace SIMS.Repositories
         IEnumerable<Product> GetAll();
         Product? GetByName(string name);
         void Update(Product product);
+        void Remove(Product product);
     }
 }

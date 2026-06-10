@@ -32,6 +32,7 @@ namespace SIMS.UI
             Console.WriteLine("1. Add Product");
             Console.WriteLine("2. View Products");
             Console.WriteLine("3. Edit Product");
+            Console.WriteLine("4. Delete Product");
             Console.WriteLine("0. Exit");
             Console.Write("Select an option: ");
         }
@@ -48,6 +49,9 @@ namespace SIMS.UI
                     return false;
                 case "3":
                     HandleEditProduct();
+                    return false;
+                case "4":
+                    HandleDeleteProduct();
                     return false;
                 case "0":
                     Console.WriteLine("\nGoodbye!");
@@ -151,6 +155,27 @@ namespace SIMS.UI
             catch (ArgumentException ex)
             {
                 Console.WriteLine($"\nValidation Error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\nAn unexpected error occurred: {ex.Message}");
+            }
+        }
+
+        private void HandleDeleteProduct()
+        {
+            Console.WriteLine("\n--- Delete Product ---");
+            try
+            {
+                Console.Write("Enter the name of the product to delete: ");
+                string name = Console.ReadLine() ?? string.Empty;
+
+                _inventoryService.DeleteProduct(name);
+                Console.WriteLine("\nProduct deleted successfully!");
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"\nError: {ex.Message}");
             }
             catch (Exception ex)
             {
