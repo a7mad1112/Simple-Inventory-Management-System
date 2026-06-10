@@ -21,6 +21,8 @@ namespace SIMS.Services
                 throw new ArgumentException("Product name cannot be empty.", nameof(name));
             }
 
+            name = name.Trim();
+
             if (_productRepository.GetByName(name) != null)
             {
                 throw new ArgumentException("A product with this name already exists.", nameof(name));
