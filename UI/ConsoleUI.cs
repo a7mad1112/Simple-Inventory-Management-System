@@ -33,6 +33,7 @@ namespace SIMS.UI
             Console.WriteLine("2. View Products");
             Console.WriteLine("3. Edit Product");
             Console.WriteLine("4. Delete Product");
+            Console.WriteLine("5. Search Product");
             Console.WriteLine("0. Exit");
             Console.Write("Select an option: ");
         }
@@ -52,6 +53,9 @@ namespace SIMS.UI
                     return false;
                 case "4":
                     HandleDeleteProduct();
+                    return false;
+                case "5":
+                    HandleSearchProduct();
                     return false;
                 case "0":
                     Console.WriteLine("\nGoodbye!");
@@ -180,6 +184,27 @@ namespace SIMS.UI
             catch (Exception ex)
             {
                 Console.WriteLine($"\nAn unexpected error occurred: {ex.Message}");
+            }
+        }
+
+        private void HandleSearchProduct()
+        {
+            Console.WriteLine("\n--- Search Product ---");
+            Console.Write("Enter product name to search: ");
+            string name = Console.ReadLine() ?? string.Empty;
+
+            var product = _inventoryService.GetProductByName(name);
+
+            if (product == null)
+            {
+                Console.WriteLine("\nProduct not found.");
+            }
+            else
+            {
+                Console.WriteLine("\n--- Product Details ---");
+                Console.WriteLine($"Name: {product.Name}");
+                Console.WriteLine($"Price: {product.Price:C}");
+                Console.WriteLine($"Quantity: {product.Quantity}");
             }
         }
     }
